@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>사귐 묵상</title>
+<meta name="theme-color" content="#FFFFFF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="사귐 묵상">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="favicon.png">
+<style>html,body{margin:0;height:100%;background:#fff}
+@media (prefers-color-scheme: dark){html,body{background:#15171A}.ld{color:#A29D97!important}}
+.ld{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font:600 15px -apple-system,"Apple SD Gothic Neo",sans-serif;color:#6E6B69;text-align:center;padding:0 24px;box-sizing:border-box}
+.dot{width:34px;height:34px;border-radius:50%;border:3px solid #FCEAE3;border-top-color:#EC491B;animation:r .9s linear infinite}
+@keyframes r{to{transform:rotate(360deg)}}</style></head>
+<body><div class="ld"><div class="dot"></div>사귐 묵상을 여는 중…</div>
+<script>
+(function(){
+  var API = 'https://script.google.com/macros/s/AKfycbww2kkfhpVWddXWIcfRl4v_OEisHqRIaZMwkj_CcyPuRSB6pBB5SkeZeghB6cJQR8AX/exec';
+  function show(h){ document.open(); document.write(h); document.close(); }
+  function get(n){
+    return fetch(API, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({fn:'getDevotion', args:['1900-01-0' + n]})})
+      .then(function(r){ return r.json(); })
+      .then(function(j){ if (!j || !j.ok) throw 0; var x = j.data && j.data.data; return x && x.parts ? x.parts.join('') : ''; });
+  }
+  var old = null; try { old = localStorage.getItem('sg_ui'); var th = JSON.parse(localStorage.getItem('sg_theme')); if (th === 'dark') document.body.style.background = '#15171A'; } catch(e){}
+  Promise.all([1,2,3,4,5,6,7,8,9].map(get)).then(function(a){
+    var h = a.join('');
+    if (h.indexOf('</html>') < 0) throw 0;
+    try { localStorage.setItem('sg_ui', h); } catch(e){}
+    show(h);
+  }).catch(function(){
+    if (old) show(old);
+    else document.querySelector('.ld').textContent = '불러오지 못했어요. 인터넷 연결을 확인하고 다시 열어 주세요.';
+  });
+})();
+</script></body></html>
